@@ -41,6 +41,20 @@ r.get('/:name/-/:filename/:sha', function * () {
 })
 
 // get scoped package tarball with sha
+r.get('/:scope/:name/-/:scope/:filename/:sha', function * () {
+  let {scope, name, filename, sha} = this.params
+  let tarball = yield tarballs(this.metric).get(`${scope}/${name}`, filename, sha)
+  if (!tarball) {
+    this.status = 404
+    this.body = {error: 'no tarball found'}
+    return
+  }
+  this.set('Content-Length', tarball.size)
+  this.set('Cache-Control', `public, max-age=${config.cache.tarballTTL}`)
+  this.body = tarball
+})
+
+// get scoped package tarball with sha
 r.get('/:scope/:name/-/:filename/:sha', function * () {
   let {scope, name, filename, sha} = this.params
   let tarball = yield tarballs(this.metric).get(`${scope}/${name}`, filename, sha)
