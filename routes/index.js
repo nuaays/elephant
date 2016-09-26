@@ -24,7 +24,9 @@ function load (name) {
 }
 
 load('packages')
+load('tarballs')
 load('auth')
 load('publish')
+load('dist_tags')
 
 module.exports = r

@@ -1,15 +1,12 @@
 FROM node:6.3.0
+MAINTAINER Jeff Dickey <dickeyxxx@gmail.com>
 
-WORKDIR /usr/src/app
-
-COPY package.json /usr/src/app/
+# Deploy application
+COPY . /srv/npm-register
+WORKDIR /srv/npm-register
 RUN npm install
 
-COPY . /usr/src/app/
+# Start application
+EXPOSE 80
+CMD ["npm", "start"]
 
-WORKDIR /usr/src/app
-
-EXPOSE 3000
-
-ENTRYPOINT ["npm"]
-CMD ["start"]
